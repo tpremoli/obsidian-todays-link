@@ -1,18 +1,20 @@
 import {App, PluginSettingTab, Setting} from "obsidian";
-import MyPlugin from "./main";
+import TodaysLinkObsidian from "./main";
 
-export interface MyPluginSettings {
-	mySetting: string;
+export interface TodaysLinkSettings {
+	ShortcutName: string;
+	DailyNoteFileName: string;
 }
 
-export const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+export const DEFAULT_SETTINGS: TodaysLinkSettings = {
+	ShortcutName: 'today',
+	DailyNoteFileName: ''
 }
 
-export class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+export class TodaysLinkSettingsTab extends PluginSettingTab {
+	plugin: TodaysLinkObsidian;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: TodaysLinkObsidian) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -23,13 +25,13 @@ export class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Settings #1')
-			.setDesc('It\'s a secret')
+			.setName('Shortcut for today\'s daily note')
+			.setDesc('The shortcut to use instead of [[today]] for today\'s daily note')
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
+				.setPlaceholder('today')
+				.setValue(this.plugin.settings.ShortcutName)
 				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
+					this.plugin.settings.ShortcutName = value;
 					await this.plugin.saveSettings();
 				}));
 	}

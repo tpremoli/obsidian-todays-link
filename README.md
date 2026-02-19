@@ -1,4 +1,4 @@
-# Obsidian Sample Plugin
+# TODO: this entire readme
 
 This is a sample plugin for Obsidian (https://obsidian.md).
 
