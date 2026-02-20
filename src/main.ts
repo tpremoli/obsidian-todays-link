@@ -19,7 +19,7 @@ export default class TodaysLinkObsidian extends Plugin {
 		const format = instance.getFormat() ?? "YYYY-MM-DD";
 		this.settings.DailyNoteFileName = format.includes("/") 
 			? format.substring(format.lastIndexOf("/") + 1) 
-			: format;
+			: format; // get the note name from DN format
 
         if (!dailyNotesPlugin?.enabled) {
             console.warn("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
@@ -46,10 +46,11 @@ export default class TodaysLinkObsidian extends Plugin {
 			}
 		});
 
-		this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
+		// this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
 	}
 
 	onunload() {
+		// this.app.workspace.off("editor-change", this.todayLinkReplaceHandler);
 	}
 
 	async loadSettings() {
