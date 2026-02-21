@@ -50,6 +50,7 @@ export default class TodaysLinkObsidian extends Plugin {
 	}
 
 	onunload() {
+		this.app.workspace.off("editor-change", this.todayLinkReplaceHandler);
 	}
 
 	async loadSettings() {
