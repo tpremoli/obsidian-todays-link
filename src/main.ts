@@ -21,7 +21,7 @@ export default class TodaysLinkObsidian extends Plugin {
 		const format = instance.getFormat() ?? "YYYY-MM-DD";
 		this.settings.DailyNoteFileName = format.includes("/") 
 			? format.substring(format.lastIndexOf("/") + 1) 
-			: format;
+			: format; // get the note name from DN format
 
         if (!dailyNotesPlugin?.enabled) {
             console.warn("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
