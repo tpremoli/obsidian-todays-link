@@ -1,4 +1,4 @@
-import {App, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
+import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
 import {UrlIntoSelection} from 'core';
 import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab} from "./settings";
 
@@ -6,7 +6,7 @@ export default class TodaysLinkObsidian extends Plugin {
 	settings: TodaysLinkSettings;
 
 	todayLinkReplaceHandler = (editor: Editor, info: MarkdownView | MarkdownFileInfo) =>
-		ReplaceTodaysLink(editor, info, this.settings);
+		UrlIntoSelection(editor, info, this.settings);
 
 	async onload() {
 		await this.loadSettings();
@@ -14,12 +14,14 @@ export default class TodaysLinkObsidian extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TodaysLinkSettingsTab(this.app, this));
 
+		// TODO: add an option to override the DailyNoteFileName
+		// TODO: add a function to load this, reloadable from settings
         const dailyNotesPlugin = this.app.internalPlugins.getPluginById("daily-notes");
 		const instance = dailyNotesPlugin.instance;
 		const format = instance.getFormat() ?? "YYYY-MM-DD";
 		this.settings.DailyNoteFileName = format.includes("/") 
 			? format.substring(format.lastIndexOf("/") + 1) 
-			: format;
+			: format; // get the note name from DN format
 
         if (!dailyNotesPlugin?.enabled) {
             console.warn("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
@@ -46,10 +48,12 @@ export default class TodaysLinkObsidian extends Plugin {
 			}
 		});
 
+		// TODO: add option to toggle if we want this in settings
 		this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
 	}
 
 	onunload() {
+		this.app.workspace.off("editor-change", this.todayLinkReplaceHandler);
 	}
 
 	async loadSettings() {
