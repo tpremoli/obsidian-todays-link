@@ -1,27 +1,33 @@
 import { EditorRange, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin } from 'obsidian';
 import { TodaysLinkSettings } from "settings";
 
-export default function UrlIntoSelection(
+export function UrlIntoSelection(
     editor: Editor,
     info: MarkdownView | MarkdownFileInfo,
     settings: TodaysLinkSettings
 ): void {
-    if (editor.getCursor().ch !== settings.ShortcutName.charCodeAt(settings.ShortcutName.length - 1) ||
-        editor.getCursor().ch !== ']'.charCodeAt(0)) {
+    const cursor = editor.getCursor();
+    const lastCursorChar = editor.getRange({ line: cursor.line, ch: cursor.ch - 1 }, cursor).charCodeAt(0);
+    // TODO: this can be precalculated
+    const lastLinkChar = settings.ShortcutName.charCodeAt(settings.ShortcutName.length - 1);
+
+    // We have to be [[today|]]
+    // TODO: support  [[today]|] and [[today]]|
+    if (lastCursorChar !== lastLinkChar) {
         return;
     }
-
-    const loc = editor.getCursor().line.toString().lastIndexOf(`[[${settings.ShortcutName}]]`);
+    const todayLinkRange: EditorRange = {
+        from: { line: cursor.line, ch: cursor.ch - `[[${settings.ShortcutName}`.length },
+        to: { line: cursor.line, ch: cursor.ch + 2 }
+    };
+    const loc = editor.getLine(cursor.line).lastIndexOf(`[[${settings.ShortcutName}]]`);
     if (loc == -1) {
         return;
+    } else if (loc != todayLinkRange.from.ch) {
+        console.error("Expected in-file location of todays-link shortcut invalid.");
     }
-    const r: EditorRange = { 
-        from: { line: editor.getCursor().line, ch: loc },
-        to: { line: editor.getCursor().line, ch: loc + `[[${settings.ShortcutName}]]`.length }
-    };
-
-    editor.replaceRange(`[[${moment().format(settings.DailyNoteFileName)}]]`, r.from, r.to);
+    const todaysLinkStr = `[[${moment().format(settings.DailyNoteFileName)}]]`;
+    editor.replaceRange(todaysLinkStr, todayLinkRange.from, todayLinkRange.to);
+    editor.setCursor(todayLinkRange.from.ch + todaysLinkStr.length);
 }
-
-
 

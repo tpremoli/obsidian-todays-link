@@ -1,4 +1,4 @@
-import {App, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
+import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
 import {UrlIntoSelection} from 'core';
 import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab} from "./settings";
 
@@ -6,7 +6,7 @@ export default class TodaysLinkObsidian extends Plugin {
 	settings: TodaysLinkSettings;
 
 	todayLinkReplaceHandler = (editor: Editor, info: MarkdownView | MarkdownFileInfo) =>
-		ReplaceTodaysLink(editor, info, this.settings);
+		UrlIntoSelection(editor, info, this.settings);
 
 	async onload() {
 		await this.loadSettings();
