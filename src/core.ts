@@ -1,4 +1,4 @@
-import { EditorRange, Editor, MarkdownView, Modal, MarkdownFileInfo, Plugin } from 'obsidian';
+import { EditorRange, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin } from 'obsidian';
 import { TodaysLinkSettings } from "settings";
 
 export default function UrlIntoSelection(
@@ -20,7 +20,7 @@ export default function UrlIntoSelection(
         to: { line: editor.getCursor().line, ch: loc + `[[${settings.ShortcutName}]]`.length }
     };
 
-    editor.replaceRange(replaceText, r.from, r.to);
+    editor.replaceRange(`[[${moment().format(settings.DailyNoteFileName)}]]`, r.from, r.to);
 }
 
 
