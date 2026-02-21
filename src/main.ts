@@ -14,6 +14,8 @@ export default class TodaysLinkObsidian extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TodaysLinkSettingsTab(this.app, this));
 
+		// TODO: add an option to override the DailyNoteFileName
+		// TODO: add a function to load this, reloadable from settings
         const dailyNotesPlugin = this.app.internalPlugins.getPluginById("daily-notes");
 		const instance = dailyNotesPlugin.instance;
 		const format = instance.getFormat() ?? "YYYY-MM-DD";
@@ -23,7 +25,7 @@ export default class TodaysLinkObsidian extends Plugin {
 
         if (!dailyNotesPlugin?.enabled) {
             console.warn("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
-            return; // bail out early — no commands or listeners registered
+            return;
         }
 
 		// This adds an editor command that can perform some operation on the current editor instance
@@ -46,6 +48,7 @@ export default class TodaysLinkObsidian extends Plugin {
 			}
 		});
 
+		// TODO: add option to toggle if we want this in settings
 		this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
 	}
 
