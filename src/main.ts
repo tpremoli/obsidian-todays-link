@@ -1,5 +1,5 @@
 import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
-import {UrlIntoSelection} from 'core';
+import {UrlIntoSelection, GetAndSetDailyNotesFormat} from 'core';
 import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab} from "./settings";
 
 export default class TodaysLinkObsidian extends Plugin {
@@ -13,20 +13,6 @@ export default class TodaysLinkObsidian extends Plugin {
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TodaysLinkSettingsTab(this.app, this));
-
-		// TODO: add an option to override the DailyNoteFileName
-		// TODO: add a function to load this, reloadable from settings
-        const dailyNotesPlugin = this.app.internalPlugins.getPluginById("daily-notes");
-		const instance = dailyNotesPlugin.instance;
-		const format = instance.getFormat() ?? "YYYY-MM-DD";
-		this.settings.DailyNoteFileName = format.includes("/") 
-			? format.substring(format.lastIndexOf("/") + 1) 
-			: format; // get the note name from DN format
-
-        if (!dailyNotesPlugin?.enabled) {
-            console.warn("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
-            return;
-        }
 
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
@@ -58,9 +44,11 @@ export default class TodaysLinkObsidian extends Plugin {
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<TodaysLinkSettings>);
+		GetAndSetDailyNotesFormat(this.app, this.settings);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+		GetAndSetDailyNotesFormat(this.app, this.settings);
 	}
 }
