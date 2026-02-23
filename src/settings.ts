@@ -13,9 +13,10 @@ export const DEFAULT_SETTINGS: TodaysLinkSettings = {
 	LastShortcutCharCode: undefined
 }
 
+// TODO: add an option to override the DailyNoteFileName
 export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings) {
-	// TODO: add an option to override the DailyNoteFileName
-	const dailyNotesPlugin = app.internalPlugins?.getPluginById?.("daily-notes");
+	// Using this internalPlugins is common but unofficial API
+	const dailyNotesPlugin = (app as any).internalPlugins?.getPluginById?.("daily-notes");
 	if (!dailyNotesPlugin || !dailyNotesPlugin?.enabled) {
 		throw new Error("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
 	}
