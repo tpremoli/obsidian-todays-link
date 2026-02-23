@@ -1,4 +1,4 @@
-import {App, ButtonComponent, PluginSettingTab, Setting} from "obsidian";
+import { App, ButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import TodaysLinkObsidian from "./main";
 
 export interface TodaysLinkSettings {
@@ -13,24 +13,24 @@ export const DEFAULT_SETTINGS: TodaysLinkSettings = {
 	LastShortcutCharCode: -1
 }
 
-export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings){
-    // TODO: add an option to override the DailyNoteFileName
-    const dailyNotesPlugin = app.internalPlugins?.getPluginById?.("daily-notes");
-    if(!dailyNotesPlugin || !dailyNotesPlugin?.enabled){
-        throw new Error("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
-    }
-    const instance = dailyNotesPlugin?.instance;
-    const format = instance?.getFormat() as string | undefined;
-    if(!format){
-        throw new Error("TodaysLink: Daily Notes doesn't have date format. Disabling plugin.");
-    }
-    settings.DailyNoteFileName = format.includes("/") 
-        ? format.substring(format.lastIndexOf("/") + 1) 
-        : format; // get the note name from DN format
+export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings) {
+	// TODO: add an option to override the DailyNoteFileName
+	const dailyNotesPlugin = app.internalPlugins?.getPluginById?.("daily-notes");
+	if (!dailyNotesPlugin || !dailyNotesPlugin?.enabled) {
+		throw new Error("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
+	}
+	const instance = dailyNotesPlugin?.instance;
+	const format = instance?.getFormat() as string | undefined;
+	if (!format) {
+		throw new Error("TodaysLink: Daily Notes doesn't have date format. Disabling plugin.");
+	}
+	settings.DailyNoteFileName = format.includes("/")
+		? format.substring(format.lastIndexOf("/") + 1)
+		: format; // get the note name from DN format
 }
 
-export function GetAndSetLastShortcutCharCode(settings: TodaysLinkSettings){
-    settings.LastShortcutCharCode = settings.ShortcutName.charCodeAt(settings.ShortcutName.length - 1);
+export function GetAndSetLastShortcutCharCode(settings: TodaysLinkSettings) {
+	settings.LastShortcutCharCode = settings.ShortcutName.charCodeAt(settings.ShortcutName.length - 1);
 }
 
 export class TodaysLinkSettingsTab extends PluginSettingTab {
@@ -42,7 +42,7 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 
 		containerEl.empty();
 
@@ -58,7 +58,12 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Reload daily note format')
-			.addButton(ButtonComponent)
+			.setName('Reload daily note date format')
+			.addButton(button => button
+				.setButtonText('Reload!')
+				.onClick(() => {
+					GetAndSetDailyNotesFormat(this.app, this.plugin.settings);
+				})
+			);
 	}
 }
