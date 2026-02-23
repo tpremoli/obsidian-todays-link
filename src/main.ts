@@ -1,6 +1,6 @@
 import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
 import {UrlIntoSelection} from 'core';
-import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab, GetAndSetDailyNotesFormat} from "./settings";
+import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab, GetAndSetDailyNotesFormat, GetAndSetLastShortcutCharCode} from "./settings";
 
 export default class TodaysLinkObsidian extends Plugin {
 	settings: TodaysLinkSettings;
@@ -45,10 +45,12 @@ export default class TodaysLinkObsidian extends Plugin {
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<TodaysLinkSettings>);
 		GetAndSetDailyNotesFormat(this.app, this.settings);
+		GetAndSetLastShortcutCharCode(this.settings);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 		GetAndSetDailyNotesFormat(this.app, this.settings);
+		GetAndSetLastShortcutCharCode(this.settings);
 	}
 }
