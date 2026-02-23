@@ -59,10 +59,13 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Reload daily note date format')
+			.setDesc(`Current format: ${this.plugin.settings.DailyNoteFileName}`)
 			.addButton(button => button
-				.setButtonText('Reload!')
+				.setButtonText('Reload')
 				.onClick(() => {
 					GetAndSetDailyNotesFormat(this.app, this.plugin.settings);
+					// refresh "current format"
+					this.display();
 				})
 			);
 	}
