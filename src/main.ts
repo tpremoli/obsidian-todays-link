@@ -14,6 +14,13 @@ export default class TodaysLinkObsidian extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TodaysLinkSettingsTab(this.app, this));
 
+		if(this.settings.LastShortcutCharCode == undefined){
+			throw new Error("TodaysLink: shortcut word is misconfigured- couldn't deduce final character");
+		}
+		if(this.settings.DailyNoteFileName == undefined){
+			throw new Error("TodaysLink: Couldn't deduce Daily Note file name");
+		}
+
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
 			id: 'add-todays-link-at-cursor',

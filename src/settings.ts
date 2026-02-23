@@ -3,14 +3,14 @@ import TodaysLinkObsidian from "./main";
 
 export interface TodaysLinkSettings {
 	ShortcutName: string;
-	DailyNoteFileName: string;
-	LastShortcutCharCode: number;
+	DailyNoteFileName: string | undefined;
+	LastShortcutCharCode: number | undefined;
 }
 
 export const DEFAULT_SETTINGS: TodaysLinkSettings = {
 	ShortcutName: 'today',
-	DailyNoteFileName: '',
-	LastShortcutCharCode: -1
+	DailyNoteFileName: undefined,
+	LastShortcutCharCode: undefined
 }
 
 export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings) {
