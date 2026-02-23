@@ -44,6 +44,6 @@ export function UrlIntoSelection(
     }
     const todaysLinkStr = `[[${moment().format(settings.DailyNoteFileName)}]]`;
     editor.replaceRange(todaysLinkStr, todayLinkRange.from, todayLinkRange.to);
-    editor.setCursor(todayLinkRange.from.ch + todaysLinkStr.length);
+    editor.setCursor({line: cursor.line, ch: todayLinkRange.from.ch + todaysLinkStr.length});
 }
 
