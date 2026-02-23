@@ -1,6 +1,6 @@
 import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
-import {UrlIntoSelection, GetAndSetDailyNotesFormat} from 'core';
-import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab} from "./settings";
+import {UrlIntoSelection} from 'core';
+import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab, GetAndSetDailyNotesFormat} from "./settings";
 
 export default class TodaysLinkObsidian extends Plugin {
 	settings: TodaysLinkSettings;

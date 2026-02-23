@@ -1,22 +1,6 @@
 import { App, EditorRange, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin } from 'obsidian';
 import { TodaysLinkSettings } from "settings";
 
-export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings){
-    // TODO: add an option to override the DailyNoteFileName
-    const dailyNotesPlugin = app.internalPlugins?.getPluginById?.("daily-notes");
-    if(!dailyNotesPlugin || !dailyNotesPlugin?.enabled){
-        throw new Error("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
-    }
-    const instance = dailyNotesPlugin?.instance;
-    const format = instance?.getFormat() as string | undefined;
-    if(!format){
-        throw new Error("TodaysLink: Daily Notes doesn't have date format. Disabling plugin.");
-    }
-    settings.DailyNoteFileName = format.includes("/") 
-        ? format.substring(format.lastIndexOf("/") + 1) 
-        : format; // get the note name from DN format
-}
-
 export function UrlIntoSelection(
     editor: Editor,
     info: MarkdownView | MarkdownFileInfo,
@@ -24,8 +8,6 @@ export function UrlIntoSelection(
 ): void {
     const cursor = editor.getCursor();
     const lastCursorChar = editor.getRange({ line: cursor.line, ch: cursor.ch - 1 }, cursor).charCodeAt(0);
-    // TODO: this can be precalculated
-    const lastLinkChar = settings.ShortcutName.charCodeAt(settings.ShortcutName.length - 1);
 
     // We have to be [[today|]]
     // TODO: support  [[today]|] and [[today]]|
