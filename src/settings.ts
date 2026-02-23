@@ -56,5 +56,9 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 					this.plugin.settings.ShortcutName = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName('Reload daily note format')
+			.addButton(ButtonComponent)
 	}
 }

@@ -11,7 +11,7 @@ export function UrlIntoSelection(
 
     // We have to be [[today|]]
     // TODO: support  [[today]|] and [[today]]|
-    if (lastCursorChar !== lastLinkChar) {
+    if (lastCursorChar !== settings.LastShortcutCharCode) {
         return;
     }
     const todayLinkRange: EditorRange = {
