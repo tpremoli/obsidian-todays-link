@@ -3,7 +3,7 @@
 	"name": "Today's Link",
 	"version": "1.0.0",
 	"minAppVersion": "1.4.4",
-	"description": "Inserts links to Today's Daily Note using a shortcut phrase",
+	"description": "Inserts links to Today's Daily Note using a shortcut phrase.",
 	"author": "tpremoli",
 	"authorUrl": "https://github.com/tpremoli",
 	"fundingUrl": "",
