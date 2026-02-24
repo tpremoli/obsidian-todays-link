@@ -1,5 +1,6 @@
-import { App, ButtonComponent, PluginSettingTab, Setting } from "obsidian";
+import { App, PluginSettingTab, Setting } from "obsidian";
 import TodaysLinkObsidian from "./main";
+import {AppWithDailyNotesPlugin, DailyNotesPlugin} from "./types";
 
 export interface TodaysLinkSettings {
 	ShortcutName: string;
@@ -16,12 +17,11 @@ export const DEFAULT_SETTINGS: TodaysLinkSettings = {
 // TODO: add an option to override the DailyNoteFileName
 export function GetAndSetDailyNotesFormat(app: App, settings: TodaysLinkSettings) {
 	// Using this internalPlugins is common but unofficial API
-	const dailyNotesPlugin = (app as any).internalPlugins?.getPluginById?.("daily-notes");
-	if (!dailyNotesPlugin || !dailyNotesPlugin?.enabled) {
+	const dailyNotesPlugin: DailyNotesPlugin = (app as AppWithDailyNotesPlugin).internalPlugins.getPluginById("daily-notes");
+	if (!dailyNotesPlugin || !dailyNotesPlugin.enabled) {
 		throw new Error("TodaysLink: Daily Notes core plugin is not enabled. Disabling plugin.");
 	}
-	const instance = dailyNotesPlugin?.instance;
-	const format = instance?.getFormat() as string | undefined;
+	const format = dailyNotesPlugin.instance.getFormat() as string | undefined;
 	if (!format) {
 		throw new Error("TodaysLink: Daily Notes doesn't have date format. Disabling plugin.");
 	}
@@ -51,7 +51,6 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 			.setName('Shortcut for today\'s daily note')
 			.setDesc('The shortcut to use instead of [[today]] for today\'s daily note')
 			.addText(text => text
-				.setPlaceholder('today')
 				.setValue(this.plugin.settings.ShortcutName)
 				.onChange(async (value) => {
 					this.plugin.settings.ShortcutName = value;
