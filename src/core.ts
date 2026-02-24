@@ -1,4 +1,4 @@
-import { App, EditorRange, Editor, MarkdownView, moment, MarkdownFileInfo, Plugin } from 'obsidian';
+import { EditorRange, Editor, MarkdownView, moment, MarkdownFileInfo } from 'obsidian';
 import { TodaysLinkSettings } from "settings";
 
 export function UrlIntoSelection(
