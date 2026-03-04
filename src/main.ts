@@ -1,6 +1,6 @@
-import {Editor, MarkdownView, moment, MarkdownFileInfo, Plugin} from 'obsidian';
-import {UrlIntoSelection} from 'core';
-import {DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab, GetAndSetDailyNotesFormat, GetAndSetLastShortcutCharCode} from "./settings";
+import { Editor, MarkdownView, moment, MarkdownFileInfo, Plugin } from 'obsidian';
+import { UrlIntoSelection } from 'core';
+import { DEFAULT_SETTINGS, TodaysLinkSettings, TodaysLinkSettingsTab, GetAndSetDailyNotesFormat, GetAndSetLastShortcutCharCode } from "./settings";
 
 export default class TodaysLinkObsidian extends Plugin {
 	settings: TodaysLinkSettings;
@@ -14,10 +14,10 @@ export default class TodaysLinkObsidian extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new TodaysLinkSettingsTab(this.app, this));
 
-		if(this.settings.LastShortcutCharCode == undefined){
+		if (this.settings.LastShortcutCharCode == undefined) {
 			throw new Error("TodaysLink: shortcut word is misconfigured- couldn't deduce final character");
 		}
-		if(this.settings.DailyNoteFileName == undefined){
+		if (this.settings.DailyNoteFileName == undefined) {
 			throw new Error("TodaysLink: Couldn't deduce Daily Note file name");
 		}
 
@@ -41,12 +41,15 @@ export default class TodaysLinkObsidian extends Plugin {
 			}
 		});
 
-		// TODO: add option to toggle if we want this in settings
-		this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
+		if (this.settings.WikiLinkShortcutEnabled) {
+			this.app.workspace.on("editor-change", this.todayLinkReplaceHandler);
+		}
 	}
 
 	onunload() {
-		this.app.workspace.off("editor-change", this.todayLinkReplaceHandler);
+		if (this.settings.WikiLinkShortcutEnabled) {
+			this.app.workspace.off("editor-change", this.todayLinkReplaceHandler);
+		}
 	}
 
 	async loadSettings() {

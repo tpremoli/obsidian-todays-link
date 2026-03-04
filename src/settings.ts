@@ -1,15 +1,17 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import TodaysLinkObsidian from "./main";
-import {AppWithDailyNotesPlugin, DailyNotesPlugin} from "./types";
+import { AppWithDailyNotesPlugin, DailyNotesPlugin } from "./types";
 
 export interface TodaysLinkSettings {
 	ShortcutName: string;
+	WikiLinkShortcutEnabled: boolean;
 	DailyNoteFileName: string | undefined;
 	LastShortcutCharCode: number | undefined;
 }
 
 export const DEFAULT_SETTINGS: TodaysLinkSettings = {
 	ShortcutName: 'today',
+	WikiLinkShortcutEnabled: true,
 	DailyNoteFileName: undefined,
 	LastShortcutCharCode: undefined
 }
@@ -56,6 +58,15 @@ export class TodaysLinkSettingsTab extends PluginSettingTab {
 					this.plugin.settings.ShortcutName = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName("Toggle linking today's daily note via wikilink")
+			.setDesc(`Toggle if you want [[${this.plugin.settings.ShortcutName}]] to be auto replaced with a link to the daily note`)
+			.addToggle(toggle => toggle.onChange(async (value) => {
+				this.plugin.settings.WikiLinkShortcutEnabled = value;
+				await this.plugin.saveSettings();
+				this.display();
+			}));
 
 		new Setting(containerEl)
 			.setName('Reload daily note date format')
