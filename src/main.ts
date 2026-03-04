@@ -23,7 +23,7 @@ export default class TodaysLinkObsidian extends Plugin {
 
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
-			id: 'add-todays-link-at-cursor',
+			id: 'add-link-today-at-cursor',
 			name: 'Add link to today\'s daily note at cursor',
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				editor.processLines(
