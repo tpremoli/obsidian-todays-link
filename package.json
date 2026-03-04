@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
-	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"name": "todays-link",
+	"version": "1.0.1",
+	"description": "Inserts links to Today's Daily Note using a shortcut phrase.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
